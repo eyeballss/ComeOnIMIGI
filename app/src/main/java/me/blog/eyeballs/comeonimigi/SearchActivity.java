@@ -9,20 +9,27 @@ import android.widget.EditText;
 public class SearchActivity extends AppCompatActivity {
 
     EditText searchKeyword;
+    EditText searchAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        searchKeyword = (EditText)findViewById(R.id.searchKeyword);
+        init();
+    }
+
+    private void init(){
+        searchKeyword = (EditText)findViewById(R.id.search_keyword_textview);
+        searchAddress = (EditText)findViewById(R.id.search_address_textview);
     }
 
     public void search(View v){
         switch(v.getId()){
-            case R.id.searchButton:
+            case R.id.search_button:
                 Intent intent = new Intent(this, ImageListActivity.class);
                 intent.putExtra("keyword", searchKeyword.getText().toString());
+                intent.putExtra("address", searchAddress.getText().toString());
                 startActivity(intent);
                 break;
         }//switch

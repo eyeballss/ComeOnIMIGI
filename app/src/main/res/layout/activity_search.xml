@@ -11,11 +11,19 @@
     tools:context="me.blog.eyeballs.comeonimigi.SearchActivity">
 
     <EditText
-        android:id="@+id/searchKeyword"
+        android:id="@+id/search_keyword_textview"
+        android:hint="keyword"
+        android:text="jpg"
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="50dp" />
+    <EditText
+        android:id="@+id/search_address_textview"
+        android:hint="address"
+        android:text="https://www.pexels.com/search/HD%20wallpaper/"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
     <Button
-        android:id="@+id/searchButton"
+        android:id="@+id/search_button"
         android:text="GO"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
