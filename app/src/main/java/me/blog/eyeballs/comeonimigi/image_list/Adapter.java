@@ -49,6 +49,10 @@ public class Adapter extends BaseAdapter {
         ImageView image_item_imageview;
     }
 
+    public void remove(int position){
+        imageArray.remove(position);
+    }
+
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 

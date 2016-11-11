@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import me.blog.eyeballs.comeonimigi.image_list.Adapter;
+import me.blog.eyeballs.comeonimigi.image_list.SwipeDismissListViewTouchListener;
 
 public class ImageListActivity extends AppCompatActivity {
 
@@ -35,9 +36,38 @@ public class ImageListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_list);
         init();
+        setSwipeToDismiss();
 
         //crawl!
         crawl.execute();
+    }
+
+    private void setSwipeToDismiss() {
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        image_listview,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    removeData(position);
+
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                        });//touchListener
+
+        image_listview.setOnTouchListener(touchListener);
+        image_listview.setOnScrollListener(touchListener.makeScrollListener());
+    }
+
+    private void removeData(int i){
+        adapter.remove(i);
     }
 
     private void init(){
