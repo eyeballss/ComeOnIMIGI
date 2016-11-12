@@ -1,10 +1,12 @@
 package me.blog.eyeballs.comeonimigi;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ public class ImageListActivity extends AppCompatActivity {
     private ListView image_listview;
     private Adapter adapter;
     private ProgressBar image_loading_progressbar;
+    private Activity thisActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +40,26 @@ public class ImageListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_list);
         init();
         setSwipeToDismiss();
+        setListClickListener();
 
         //crawl!
         crawl.execute();
+
+
     }
+
+    private void setListClickListener() {
+        image_listview.setOnItemClickListener(itemClickListener);
+    }
+
+    private AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Intent intent = new Intent(thisActivity, ImageDetailActivity.class);
+            intent.putExtra("position", i);
+            startActivity(intent);
+        }
+    };
 
     private void setSwipeToDismiss() {
         SwipeDismissListViewTouchListener touchListener =
@@ -66,24 +85,26 @@ public class ImageListActivity extends AppCompatActivity {
         image_listview.setOnScrollListener(touchListener.makeScrollListener());
     }
 
-    private void removeData(int i){
+    private void removeData(int i) {
         adapter.remove(i);
     }
 
-    private void init(){
+    private void init() {
+        thisActivity=this;
+
         Intent intent = getIntent();
-        keyword =intent.getExtras().getString("keyword");
-        address =intent.getExtras().getString("address");
+        keyword = intent.getExtras().getString("keyword");
+        address = intent.getExtras().getString("address");
 
         imageArray = new ArrayList<String>();
 
         crawl = new Crawl();
 
-        image_listview = (ListView)findViewById(R.id.image_listview);
+        image_listview = (ListView) findViewById(R.id.image_listview);
         adapter = new Adapter(this, imageArray);
         image_listview.setAdapter(adapter);
 
-        image_loading_progressbar= (ProgressBar)findViewById(R.id.image_loading_progressbar);
+        image_loading_progressbar = (ProgressBar) findViewById(R.id.image_loading_progressbar);
     }
 
 
@@ -102,10 +123,10 @@ public class ImageListActivity extends AppCompatActivity {
                 String result = null;
                 for (Element element : elements) {
                     result = element.attr("src").toString();
-                    if(result.contains(".jp") || result.contains(".JP") || result.contains(".bmp") || result.contains(".BMP")){
+                    if (result.contains(".jp") || result.contains(".JP") || result.contains(".bmp") || result.contains(".BMP")) {
                         imageArray.add(result);
                     }
-                    if(!keyword.equals("") && result.contains(keyword)){
+                    if (!keyword.equals("") && result.contains(keyword)) {
                         imageArray.add(result);
                     }
                 }

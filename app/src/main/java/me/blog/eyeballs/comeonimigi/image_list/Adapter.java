@@ -53,6 +53,14 @@ public class Adapter extends BaseAdapter {
         imageArray.remove(position);
     }
 
+    public void removeAll(){
+        imageArray.clear();
+    }
+
+    public void setImageArray(List imageArray){
+        this.imageArray = (ArrayList<String>)imageArray;
+    }
+
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 
@@ -69,7 +77,8 @@ public class Adapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        new ShowWebImage().setImageView(holder.image_item_imageview).execute(imageArray.get(i));
+        new ShowWebImage().setScaledImage(true).setImageView(holder.image_item_imageview).execute(imageArray.get(i));
+
         return convertView;
     }
 }
